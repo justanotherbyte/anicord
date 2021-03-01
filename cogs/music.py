@@ -481,51 +481,7 @@ class music(commands.Cog):
     
 
     
-    @commands.command()
-    async def playlist(self, ctx, *, name : str):
-        playlist = await get_playlist(ctx.author.id, name)
-        if playlist == None:
-            await errormsgs.pass_error(ctx, "I couldn't find a playlist with that name!")
-            return
-        member = ctx.author
-        if member is not None and member.voice is not None:
-            vc = member.voice.channel
-            player = self.client.music.player_manager.create(ctx.guild.id, endpoint = str(ctx.guild.region))
-            player.store("channel", ctx.channel.id)
-            await self.connect_to(ctx.guild.id, str(ctx.author.voice.channel.id))
-        
-        player = self.client.music.player_manager.get(ctx.guild.id)
-        
-        i = 0
-        pl_len = len(playlist)
-        for song in playlist:
-            try:
-                query = f"ytsearch:{song}"
-                results = await player.node.get_tracks(query)
-                track = results["tracks"][0]
-                player.add(ctx.author.id, track)
-                i += 1
-            except:
-                continue
-
-        await sysmsgs.sys(ctx, f"Queued `{i}/{pl_len}` songs!")
-        if not player.is_playing:
-            player.store("channel", ctx.channel.id)
-            await self.connect_to(ctx.guild.id, str(ctx.author.voice.channel.id))
-            await player.play()
-            await sysmsgs.sys(ctx, f"Started Playlist Queue!")
-            songs = ""
-            i = 0
-            for _ in playlist:
-                i += 1
-                songs = songs + "\n" + f"`{i}` {_}"
-
-            embed = discord.Embed(
-                title = "Playlist Viewer",
-                description = songs,
-                colour = self.client.colours["EMBEDCOLOUR"]
-            )
-            await ctx.send(embed = embed)
+    
 
 
     

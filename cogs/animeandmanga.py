@@ -3,7 +3,7 @@ from discord.ext import commands
 import aiohttp
 import asyncio
 from plugins.parsers import EmbedParsers
-
+from disputils import BotEmbedPaginator
 async def close_session(http_session):
     await http_session.close()
 
@@ -19,7 +19,9 @@ class Anime(commands.Cog):
         url = f"{self.base}/anime?filter[text]={query}"
         async with self.session.get(url) as response:
             data = await response.json()
-            await EmbedParsers.parseforsearch(data)
+            embeds = await EmbedParsers.parseforsearch(data, self.client.colours["EMBEDCOLOUR"])
+            paginator = BotEmbedPaginator(ctx, embeds)
+            await paginator.run()
             
 
     

@@ -117,7 +117,9 @@ ENV/
 env.bak/
 venv.bak/
 pythonenv*
-
+#Lavalink
+Lavalink.jar
+application.yml
 # Spyder project settings
 .spyderproject
 .spyproject

@@ -12,9 +12,18 @@ def get_token():
 
     return os.getenv("TOKEN")
 
+def get_lavalink_token():
+    try:
+        load_dotenv()
+    except:
+        pass
+
+    return os.getenv("LAVALINK_TOKEN")
 
 INITIAL_EXTENSIONS = [
-    "cogs.animeandmanga"
+    "cogs.animeandmanga",
+    "cogs.waifu",
+    "cogs.music"
 ]
 
 class Anicord(commands.Bot):
@@ -24,9 +33,8 @@ class Anicord(commands.Bot):
             case_insensitive = True,
             owner_id = 691406006277898302
         )
-        for cog in INITIAL_EXTENSIONS:
-            self.load_extension(cog)
-            print(f"Loaded {cog}")
+        self.lavalink_token = get_lavalink_token()
+        
 
     
     async def on_ready(self):
@@ -35,6 +43,9 @@ class Anicord(commands.Bot):
         print('ID: ' + str(self.user.id))
         print('------')
         await load_config(self)
+        for cog in INITIAL_EXTENSIONS:
+            self.load_extension(cog)
+            print(f"Loaded {cog}")
 
     async def on_message(self, message):
         content = message.content.lower()

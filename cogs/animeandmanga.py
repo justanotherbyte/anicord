@@ -7,7 +7,7 @@ from disputils import BotEmbedPaginator
 async def close_session(http_session):
     await http_session.close()
 
-class Anime(commands.Cog):
+class Anime_Manga(commands.Cog):
     def __init__(self, client):
         self.client = client
         self.session = aiohttp.ClientSession()
@@ -17,11 +17,31 @@ class Anime(commands.Cog):
     async def anime(self, ctx, *, query : str):
         query = query.replace(" ", r"%20")
         url = f"{self.base}/anime?filter[text]={query}"
-        async with self.session.get(url) as response:
-            data = await response.json()
-            embeds = await EmbedParsers.parseforsearch(data, self.client.colours["EMBEDCOLOUR"])
-            paginator = BotEmbedPaginator(ctx, embeds)
-            await paginator.run()
+        async with ctx.channel.typing():
+            async with self.session.get(url) as response:
+                data = await response.json()
+                embeds = await EmbedParsers.parseforsearch(data, self.client.colours["EMBEDCOLOUR"])
+                paginator = BotEmbedPaginator(ctx, embeds)
+                
+        await paginator.run()
+        await ctx.message.add_reaction("✅")
+
+
+    @commands.command(usage = "<query>")
+    async def manga(self, ctx, *, query : str):
+        query = query.replace(" ", r"%20")
+        url = f"{self.base}/manga?filter[text]={query}"
+        async with ctx.channel.typing():
+            async with self.session.get(url) as response:
+                data = await response.json()
+                embeds = await EmbedParsers.parseforsearch(data, self.client.colours["EMBEDCOLOUR"])
+                paginator = BotEmbedPaginator(ctx, embeds)
+                
+        await paginator.run()
+        await ctx.message.add_reaction("✅")
+
+
+    
             
 
     
@@ -30,4 +50,4 @@ class Anime(commands.Cog):
 
 
 def setup(client):
-    client.add_cog(Anime(client))
+    client.add_cog(Anime_Manga(client))

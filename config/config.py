@@ -5,7 +5,8 @@ colours = {
 }
 
 emojis = {
-    "REDPASTELHEART" : "<:red_pastel_heart:815887671204511764>"
+    "REDPASTELHEART" : "<:red_pastel_heart:815887671204511764>",
+    "WHITECHECKMARK" : "✅"
 }
 
 

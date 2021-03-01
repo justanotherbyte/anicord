@@ -12,6 +12,11 @@ def get_token():
 
     return os.getenv("TOKEN")
 
+
+INITIAL_EXTENSIONS = [
+    "cogs.animeandmanga"
+]
+
 class Anicord(commands.Bot):
     def __init__(self):
         super().__init__(
@@ -19,6 +24,9 @@ class Anicord(commands.Bot):
             case_insensitive = True,
             owner_id = 691406006277898302
         )
+        for cog in INITIAL_EXTENSIONS:
+            self.load_extension(cog)
+            print(f"Loaded {cog}")
 
     
     async def on_ready(self):
